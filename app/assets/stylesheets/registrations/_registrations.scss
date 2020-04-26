@@ -86,9 +86,72 @@ input:focus{
   &--day{
     position: absolute;
     top: 13px;
-    right: 35px;
+    right: 0;
   }
 }
+
+// パスワード入力のナビゲーター
+.field__pw{
+  position: relative;
+  .nav__password{
+    position: absolute;
+    top: 2px;
+    right: 0;
+    opacity: 0.9;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: gray;
+  }
+}
+
+// ナビゲーター
+.nav__information{
+  color: gray;
+  opacity: 0.9;
+  letter-spacing: 2px;
+  font-size: 13px;
+}
+
+.nav__consent{
+  padding-top: 30px;
+  color: black;
+  &--link{
+    color: $skyblue;
+    padding-left: 8px;
+    &:hover{
+      opacity: 0.8;
+      border-bottom: 1px solid $skyblue;
+    }
+  }
+}
+
+.nav__personal--information{
+  text-align: right;
+  padding: 30px 0;
+  .personal__information--link{
+    padding-top: 20px;
+    color: $skyblue;
+    &:hover{
+      opacity: 0.8;
+      border-bottom: 1px solid $skyblue;
+    }
+  }
+}
+
+.nav__privacy--policy{
+  padding-top: 7px; 
+  font-size: 6px;
+  background-color:$whitesmoke;
+  height: 45px;
+  .google__privacy--link, .terms__of--service{
+    color: $skyblue;
+    &:hover{
+      opacity: 0.6;
+      border-bottom: 1px solid $skyblue;
+    }
+  }
+}
+
 
 // 新規登録画面のcss
 
