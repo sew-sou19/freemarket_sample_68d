@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_04_090604) do
+ActiveRecord::Schema.define(version: 2020_06_06_192635) do
 
   create_table "accounts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -64,8 +64,6 @@ ActiveRecord::Schema.define(version: 2020_06_04_090604) do
   end
 
   create_table "items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.integer "buyer_id"
-    t.integer "saler_id"
     t.string "name", null: false
     t.text "explanation"
     t.integer "delivery_charge_flag", null: false
@@ -78,16 +76,20 @@ ActiveRecord::Schema.define(version: 2020_06_04_090604) do
     t.integer "delivery_method_id"
     t.integer "trading_status_id", default: 1
     t.bigint "category_id", null: false
+    t.bigint "saler_id", null: false
+    t.bigint "buyer_id"
     t.index ["buyer_id"], name: "index_items_on_buyer_id"
     t.index ["category_id"], name: "index_items_on_category_id"
     t.index ["saler_id"], name: "index_items_on_saler_id"
   end
 
   create_table "likes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "item_id"
+    t.bigint "user_id", null: false
+    t.bigint "item_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_likes_on_item_id"
+    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -141,6 +143,8 @@ ActiveRecord::Schema.define(version: 2020_06_04_090604) do
   add_foreign_key "cards", "users"
   add_foreign_key "images", "items"
   add_foreign_key "items", "categories"
+  add_foreign_key "items", "users", column: "buyer_id"
+  add_foreign_key "items", "users", column: "saler_id"
   add_foreign_key "likes", "items"
   add_foreign_key "likes", "users"
   add_foreign_key "messages", "items", column: "room_id"
