@@ -1,8 +1,4 @@
 module TradingHelper
-  def trading_item_users(item)
-    @saler_user = User.find(item.saler_id)
-    @buyer_user = User.find(item.buyer_id)
-  end
 
   def trading_item_fee(item)
     price = item.price * 0.1 
