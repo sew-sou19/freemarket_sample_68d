@@ -39,8 +39,7 @@ Things you may want to cover:
 |birthday|date|null: false|
 
 ### Association
-- has_many :saling_items, -> { where(buyer_id is NULL) }, foreign_key: saler_id,     class_name: item
-- has_many :sold_items, -> { where(buyer_id is not NULL) }, foreign_key: saler_id, class_name: item
+- has_many :saler_items, foreign_key: saler_id, class_name: item
 - has_many :buyed_items, foreign_key: buyer_id, class_name: Item
 - has_many :likes
 - has_many :from_messages, class_name: "Message", foreign_key: "from_id"
