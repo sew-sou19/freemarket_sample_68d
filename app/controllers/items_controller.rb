@@ -57,8 +57,6 @@ class ItemsController < ApplicationController
   def show
     if @item == nil || @item.trading_status_id == 4
       redirect_to root_path 
-    else
-      @user = User.find_by(id: @item.saler_id)
     end
   end 
 
