@@ -11,13 +11,13 @@
         .item__name
           = @item.name.truncate(15, omission: '...')
         .saler__user
-          = @saler_user.nickname.truncate(15, omission: '...')
+          = @item.saler.nickname.truncate(15, omission: '...')
     .item__information
       .item__information__title
         発送日数
       .item__information__box
         = @item.delivery_date.name
-    - if @saler_user == current_user
+    - if @item.saler == current_user
       .item__information
         .item__information__title
           送料
@@ -47,7 +47,7 @@
           お支払い金額
         .item__information__box
           = "#{@item.price.to_s(:delimited)}円"
-  - if @saler_user == current_user
+  - if @item.saler == current_user
     .trading__information
       .trading__information__title
         購入者情報
@@ -56,7 +56,7 @@
           .item__information__title
             購入者ニックネーム
           .item__information__box
-            = @buyer_user.nickname.truncate(15, omission: '...')
+            = @item.buyer.nickname.truncate(15, omission: '...')
       .trading__information__box
         .item__information
           .item__information__title
@@ -72,7 +72,7 @@
           .item__information__title
             出品者ニックネーム
           .item__information__box
-            = @saler_user.nickname.truncate(15, omission: '...')
+            = @item.saler.nickname.truncate(15, omission: '...')
       .trading__information__box
         .item__information
           .item__information__title

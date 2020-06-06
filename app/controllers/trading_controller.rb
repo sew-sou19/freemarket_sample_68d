@@ -3,7 +3,6 @@ class TradingController < ApplicationController
   before_action :set_category_brand
   before_action :set_trading_item
   before_action :set_item_search_query
-  before_action :set_trading_item_users
   before_action :set_new_message
   before_action :item_user?
   
@@ -14,21 +13,21 @@ class TradingController < ApplicationController
 
   def update
     case current_user.id
-    when @saler_user.id
+    when @item.saler.id
       case @item.trading_status_id
       when 1
         redirect_to root_path unless @item.update!(trading_status_id: 2) 
       when 3
         if @item.update!(trading_status_id: 5)
-          sales_prices(@saler_user, @item)
-          gives_point(@buyer_user, @item)
+          sales_prices(@item.saler, @item)
+          gives_point(@item.buyer, @item)
         else
           redirect_to root_path
         end
       else
         redirect_to root_path
       end
-    when @buyer_user.id
+    when @item.buyer.id
       case @item.trading_status_id
       when 2 
         redirect_to root_path unless @item.update(trading_status_id: 3)
@@ -40,15 +39,15 @@ class TradingController < ApplicationController
 
   def cancel
     case current_user.id
-    when @saler_user.id
+    when @item.saler.id
       case @item.trading_status_id
       when 1
         if @item.update(trading_status_id: 7)
           Message.create(
-            from_id: @saler_user.id, 
-            to_id:   @buyer_user.id, 
+            from_id: @item.saler.id, 
+            to_id:   @item.buyer.id, 
             room_id: @item.id, 
-            message: "#{@saler_user.nickname}さんから取引キャンセル願いがありました"
+            message: "#{@item.saler.nickname}さんから取引キャンセル願いがありました"
           )
         else
           redirect_to root_path
@@ -56,10 +55,10 @@ class TradingController < ApplicationController
       when 6
         if @item.update(trading_status_id: 8)
           Message.create(
-            from_id: @saler_user.id, 
-            to_id:   @buyer_user.id, 
+            from_id: @item.saler.id, 
+            to_id:   @item.buyer.id, 
             room_id: @item.id, 
-            message: "#{@saler_user.nickname}さんが取引キャンセルを承認しました"
+            message: "#{@item.saler.nickname}さんが取引キャンセルを承認しました"
           )
         else
           redirect_to root_path
@@ -67,15 +66,15 @@ class TradingController < ApplicationController
       else
         redirect_to root_path
       end
-    when @buyer_user.id
+    when @item.buyer.id
       case @item.trading_status_id
       when 1
         if @item.update(trading_status_id: 6)
           Message.create(
-            from_id: @buyer_user.id, 
-            to_id:   @saler_user.id, 
+            from_id: @item.buyer.id, 
+            to_id:   @item.saler.id, 
             room_id: @item.id, 
-            message: "#{@buyer_user.nickname}さんから取引キャンセル願いがありました"
+            message: "#{@item.buyer.nickname}さんから取引キャンセル願いがありました"
           )
         else
           redirect_to root_path
@@ -83,10 +82,10 @@ class TradingController < ApplicationController
       when 7
         if @item.update(trading_status_id: 8)
           Message.create(
-            from_id: @buyer_user.id, 
-            to_id:   @saler_user.id, 
+            from_id: @item.buyer.id, 
+            to_id:   @item.saler.id, 
             room_id: @item.id, 
-            message: "#{@buyer_user.nickname}さんが取引キャンセルを承認しました"
+            message: "#{@item.buyer.nickname}さんが取引キャンセルを承認しました"
           )
         else
           redirect_to root_path
@@ -101,7 +100,7 @@ class TradingController < ApplicationController
   end
 
   def relist
-    if current_user.id == @saler_user.id && @item.trading_status_id == 8
+    if current_user.id == @item.saler.id && @item.trading_status_id == 8
       @item.update(trading_status_id: 1, buyer_id: nil) ? (redirect_to item_path(@item)) : (redirect_to root_path)
     else
       redirect_to root_path
@@ -109,11 +108,6 @@ class TradingController < ApplicationController
   end
 
   private
-
-  def set_trading_item_users
-    trading_item_users(@item)
-  end
-
   def set_new_message
     @message = Message.new
   end

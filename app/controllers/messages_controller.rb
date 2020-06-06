@@ -21,8 +21,7 @@ class MessagesController < ApplicationController
   private
 
   def send_message_to_user?
-    trading_item_users(@item)
-    @to_user = @saler_user == current_user ?  @buyer_user : @saler_user
+    @to_user = @item.saler == current_user ?  @item.buyer : @item.saler
   end
 
   def set_all_messages
