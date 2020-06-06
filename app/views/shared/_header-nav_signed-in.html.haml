@@ -28,9 +28,10 @@
         = current_user.nickname.truncate(15, omission: '...')
       .user__details
         = link_to "#", class: "user__detaild--evaluation user__details--link" do
-          %span 評価：１
-        = link_to "#", class: "user__detaild--saled user__details--link" do
-          %span 出品数：１   
+          %span 評価： １
+        = link_to exhibition_users_path, class: "user__detaild--saled user__details--link" do
+          %span 出品数：   
+          = current_user.saler_items.saling.count
     .mypage__container--menu
       .menu__sales
         = render "shared/header-price_point"
