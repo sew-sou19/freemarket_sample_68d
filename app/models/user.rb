@@ -9,7 +9,9 @@ class User < ApplicationRecord
   has_one  :sales_price,                                                 dependent: :destroy
   has_one  :point,                                                       dependent: :destroy
   has_many :likes,                                                       dependent: :destroy
-  has_many :from_messages,class_name: "Message" ,foreign_key: "from_id", dependent: :destroy
+  has_many :from_messages,class_name: "Message",foreign_key: "from_id",  dependent: :destroy
+  has_many :saler_items,  class_name: "Item",   foreign_key: "saler_id", dependent: :destroy  
+  has_many :buyed_items,  class_name: "Item",   foreign_key: "buyer_id", dependent: :destroy
 
   
   
