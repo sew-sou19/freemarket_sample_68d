@@ -39,9 +39,9 @@ $(function() {
     const html = `<option value="${method.id}" >${method.name}</option>`;
     return html;
   }
-  function appendDeliveryMethod(insertHTML, flag) {
+  function appendDeliveryMethod(insertHTML) {
     const html = `
-      <div class='field' id='charge-${flag}'>
+      <div class='field' id='delivery_method'>
         <div class='field__label'>
           <label for="item_delivery_method_id">配送の方法</label>
           <span class='field__label--require'>必須</span>
@@ -58,8 +58,7 @@ $(function() {
 
   // 配送料の負担の選択に応じて、表示する内容を変更する動作
   $(document).on('change', '#item_delivery_charge_flag', function (){
-    const sellerChargeMethod = $('#charge-1')
-    const buyerChargeMethod = $('#charge-2')  
+    const delivery_method = $('#delivery_method')
     $("select[name='item[delivery_method_id]'] option").attr("selected", false);
     const chargeFlag = $(this).val();
     if (chargeFlag != "") {
@@ -70,20 +69,18 @@ $(function() {
         dataType: 'json'
       })
       .done(function(methods){  
-        buyerChargeMethod.remove();
-        sellerChargeMethod.remove();
+        delivery_method.remove();
         let insertHTML;
         methods.forEach(function(method) {
           insertHTML += appendMethod(method);
         })
-        appendDeliveryMethod(insertHTML, chargeFlag)
+        appendDeliveryMethod(insertHTML)
       })
       .fail(function() {
         alert('配送方法の取得に失敗しました')
       })
     } else {
-      sellerChargeMethod.remove();
-      buyerChargeMethod.remove();
+      delivery_method.remove();
     }
   });
 });
@@ -93,13 +90,18 @@ $(function() {
   let value;
   let next;
   let priceNext;
-  let imageNext;
+  let textNext;
   let input_column;
+  let cnt;
+  const cnt_area_name = $('.now_cnt_name')
+  const cnt_area_explanation = $('.now_cnt_explanation')
 
   // blur時の動作
   function fieldBlur(input) {
+    cnt = input.val().length;
     value = input.val();
     next = input.next();
+    textNext = input.next().next();
     priceNext = input.parent().parent().next();
     input_column = input.prop('id');
     // 未入力のチェック
@@ -107,19 +109,21 @@ $(function() {
       case "item_name":
         if (value === "") {
           input.addClass('error')
-          next.remove();
-          input.after(`<p class='error'>入力してください</p>`)
-        } else if (next.hasClass('error')) {
-          input.addClass('error')
+          textNext.remove();
+          input.parent().append(`<p class='error'>入力してください</p>`)
+        } else if (cnt <= 40) {
+          input.removeClass('error')
+          textNext.remove();
         }
         break;
       case "item_explanation":
         if (value === "") {
           input.addClass('error')
-          next.remove();
-          input.after(`<p class='error'>入力してください</p>`)
-        } else if (next.hasClass('error')) {
-          input.addClass('error')
+          textNext.remove();
+          input.parent().append(`<p class='error'>入力してください</p>`)
+        } else if (cnt <= 1000) {
+          input.removeClass('error')
+          textNext.remove();
         }
         break;
       case "sell-price-input":
@@ -154,64 +158,60 @@ $(function() {
   }
   // keyup時の動作
   function fieldKeyup(input) {
-    let cnt;
+    cnt = input.val().length;
     value = input.val();
     next = input.next();
+    textNext = input.next().next();
     priceNext = input.parent().parent().next();
     input_column = input.prop('id');
 
-    if (value != "") {
-      switch (input_column) {
-        case "item_name":
-          cnt = input.val().length;
+    switch (input_column) {
+      case "item_name":
+        cnt_area_name.text(cnt);
+        if (value != "") {
+          cnt_area_name.text(cnt);
           if (cnt <= 40) {
-            next.remove();
+            input.removeClass('error')
+            cnt_area_name.parent().css('color', 'gray')
+            textNext.remove();
           } else {
-            if (!next.hasClass('error')) {
-              input.addClass('error');
-              input.after(`<p class='error'>40文字以下で入力してください</p>`)
-            }
-          }
-          break;
-        case "item_explanation":
-          cnt = input.val().length;
+            textNext.remove();
+            cnt_area_name.parent().css('color', 'red')
+            input.addClass('error');
+            input.parent().append(`<p class='error'>40文字以下で入力してください</p>`)
+          }  
+        }
+        break;
+      case "item_explanation":
+        cnt_area_explanation.text(cnt);
+        if (value != "") {
           if (cnt <= 1000) {
-            next.remove();
+            input.removeClass('error')
+            cnt_area_explanation.parent().css('color', 'gray')
+            textNext.remove();
           } else {
-            if (!next.hasClass('error')) {
-              input.addClass('error');
-              input.after(`<p class='error'>1000文字以下で入力してください</p>`)
-            }
+            textNext.remove();
+            cnt_area_explanation.parent().css('color', 'red')
+            input.addClass('error');
+            input.parent().append(`<p class='error'>1000文字以下で入力してください</p>`)
+          }  
+        }
+        break;
+      case "sell-price-input":
+        if (value < 300 || value >= 10000000) {
+          if (!priceNext.hasClass('error')) {
+            input.addClass('error');
+            input.parent().parent().after(`<p class='error price-error'>300以上10,000,000未満で入力してください</p>`);
           }
-          break;
-        case "sell-price-input":
-          if (value < 300 || value >= 10000000) {
-            if (!priceNext.hasClass('error')) {
-              input.parent().parent().after(`<p class='error price-error'>300以上10,000,000未満で入力してください</p>`);
-            }
-          } else if (priceNext.hasClass('error')) {
-            priceNext.remove();
-          } else {
-            ;
-          }
-          break;
-        default:
-          ;
-      }
-    }
-  }
-
-  // 画像の入力チェック
-  function imageCheck(num) {
-    const imageNext = $('#image-box-1').next();
-    if (num == 0) {
-      if (!imageNext.hasClass('error')) {
-        $('#image-box-1').after(`<p class='error'>画像がありません</p>`);
-      }
-    } else {
-      if (imageNext.hasClass('error')) {
-        imageNext.remove();
-      }
+        } else if (priceNext.hasClass('error')) {
+          input.removeClass('error')
+          priceNext.remove();
+        } else {
+          input.removeClass('error')
+        }
+        break;
+      default:
+        ;
     }
   }
 
@@ -241,7 +241,18 @@ $(function() {
     const submitID = $(this).attr('id')
     let flag = true;
     const num = $('.item-image').length
-    imageCheck(num);
+    const imageNext = $('#image-box-1').next();
+
+    if (num == 0) {
+      flag = false;
+      if (!imageNext.hasClass('error')) {
+        $('#image-box-1').after(`<p class='error'>画像がありません</p>`);
+      }
+    } else {
+      if (imageNext.hasClass('error')) {
+        imageNext.remove();
+      }
+    }
 
     $('input:required').each(function(e) {
       if ($('input:required').eq(e).val() === "") {

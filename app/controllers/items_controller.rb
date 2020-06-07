@@ -1,10 +1,9 @@
 class ItemsController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:index, :show, :search]
+  skip_before_action :authenticate_user!, only: [:index, :show, :search, :category_children, :delivery_method, :category_grandchildren, :price_range]
   before_action :set_item_search_query, expect: [:search]
   before_action :set_item, only: [:show, :edit, :update, :destroy]
   before_action :set_category_brand,  except: [:destroy]
   
-
   def index
   end
 
@@ -39,7 +38,7 @@ class ItemsController < ApplicationController
     @parents = Category.ancestries(nil).name_not("カテゴリー一覧")
     @category_child_array = @item.category.parent.siblings
     @category_grandchild_array = @item.category.siblings
-    @delivery_methods = DeliveryMethod.find_all_by_flag(@item.delivery_charge_flag)
+    @delivery_methods = DeliveryMethod.find_all_by_flag(@item.delivery_charge_flag.to_s)
   end
 
   def update
@@ -90,7 +89,7 @@ class ItemsController < ApplicationController
     @search_parents = Category.where(ancestry: nil).where.not(name: "カテゴリー一覧").pluck(:name)
 
     sort = params[:sort] || "created_at DESC"
-    @q = Item.includes(:images).search(search_params)
+    @q = Item.includes(:images).where.not(trading_status_id: 4).search(search_params)
     @items = @q.result(distinct: true).order(sort)
 
     # 販売状況が検索条件にあるとき
