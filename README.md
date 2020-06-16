@@ -23,6 +23,39 @@ Things you may want to cover:
 
 * ...
 
+# 初回起動手順
+
+```
+git clone https://github.com/masato-teshita/freemarket_sample_68d.git
+cd freemarket_sample_68d
+bundle
+rails db:create
+rails db:migrate
+rails db:seed
+rails s
+
+# ログイン
+# user: user1@furima.com
+# pass: furima1234
+```
+
+# サンプルユーザー一覧
+
+|email|pass|
+|-----|----|
+|user1@furima.com|furima1234|
+|user2@furima.com|furima1234|
+|user3@furima.com|furima1234|
+|user4@furima.com|furima1234|
+|user5@furima.com|furima1234|
+|user6@furima.com|furima1234|
+|user7@furima.com|furima1234|
+|user8@furima.com|furima1234|
+|user9@furima.com|furima1234|
+|user10@furima.com|furima1234|
+
+
+# DBテーブル構成
 
 ## usersテーブル
 
