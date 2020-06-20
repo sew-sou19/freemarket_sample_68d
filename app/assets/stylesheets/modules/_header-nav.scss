@@ -120,28 +120,12 @@
   right: 26.5%;
   display: none;
 }
-.notice__list{
-  left: 0px;
+.nothice__list{
   z-index: 1000;
-  right: 100px;
   width: 300px;
   background-color: white;
   border-top: 1px solid $whitesmoke;
-  position: absolute;
-  padding: 55px 30px;
-  text-align: center;
-  color:$lightgray;
-  p{
-    padding-top: 35px;
-  }
-}
-
-.todo__list{
-  z-index: 1000;
   top: 40px;
-  width: 300px;
-  background-color: white;
-  border-top: 1px solid $whitesmoke;
   position: absolute;
   padding: 55px 30px;
   text-align: center;
