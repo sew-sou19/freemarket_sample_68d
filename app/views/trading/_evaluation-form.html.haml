@@ -1,4 +1,4 @@
-= form_with model: [item, evaluation], id: "evaluation__form" do |f|
+= form_with model: [item, evaluation], id: "evaluation__form", local: true do |f|
   .field__radio
     = f.radio_button :evaluation, 1, id: "good", required: true
     = f.label :良い, for: "good" do
@@ -16,6 +16,6 @@
     = f.text_area :comment, placeholder: "例）お取引ありがとうございました。"
   .field__action
     - if item.trading_status_id == 2
-      = f.submit "受け取り評価を完了する", id: "evaluation__btn", data: { disable_with: "処理中..." }
+      = f.submit "受け取り評価を完了する", id: "evaluation__btn"
     - else
-      = f.submit "取引評価を完了する", id: "evaluation__btn", data: { disable_with: "処理中..." }
+      = f.submit "取引評価を完了する", id: "evaluation__btn"
