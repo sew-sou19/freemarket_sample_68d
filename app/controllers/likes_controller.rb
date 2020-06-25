@@ -1,25 +1,21 @@
 class LikesController < ApplicationController
   before_action :set_item_search_query
   before_action :set_item, except: [:index]
-  before_action :set_category_brand,  only: [:index]
+  before_action :set_categories,  only: [:index]
   before_action :move_show_item, except: [:index]
 
   def index
-    items = []
-    likes = Like.where(user_id: params[:user_id])
-    if likes.present?
-      likes.each { |like| items << Item.find(like.item_id)}
-    end
-    @items = Kaminari.paginate_array(items).page(params[:page]).per(15)
+    like_ids = Like.users(params[:user_id]).pluck(:id)
+    @items = Item.eager_load(:images).joins(:likes).where(likes: {id: like_ids}).page(params[:page]).per(12)
   end
 
   def create
-    like = Like.create(user_id: current_user.id, item_id: params[:item_id])
+    like = Like.create(user_id: current_user.id, item_id: params[:item_id])&.create_notification_by(current_user)
   end
 
   def destroy
     like = Like.find(params[:id])
-    current_user.id == like.user_id ? ( like.destroy) : (redirect_to root_path)
+    current_user.id == like.user_id ? ( like.destroy&.destroy_notification_by(current_user, @item.id)) : (redirect_to root_path)
   end
 
   private

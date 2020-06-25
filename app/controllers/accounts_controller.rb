@@ -1,15 +1,14 @@
 class AccountsController < ApplicationController
   before_action :set_account, except: [:create]
   before_action :set_item_search_query
-  before_action :set_category_brand
+  before_action :set_categories
   def new
     redirect_to edit_account_path(current_user) if @account.present?
     @account = Account.new
   end
   
   def create
-    Account.create!(account_params) ? (redirect_to edit_account_path(current_user)) : (render :new)
-    
+    Account.create(account_params) ? (redirect_to edit_account_path(current_user)) : (redirect_to new_account_path)
   end
 
   def edit
@@ -17,21 +16,25 @@ class AccountsController < ApplicationController
   end
 
   def update
-    @account.update!(account_params) ? (redirect_to edit_account_path(current_user)) : (redirect_to root_path)
+    @account.update(account_params) ? (redirect_to edit_account_path(current_user)) : (redirect_to root_path)
   end
 
   def destroy
     redirect_to root_path unless current_user.id == @account.user_id
-    @account.destroy! ? (redirect_to edit_account_path(current_user)) : (render :edit)
+    @account.destroy ? (redirect_to new_account_path) : (redirect_to root_path)
   end
 
   private
 
   def set_account
-    @account = Account.find_by(user_id: current_user.id)
+    @account = current_user.account
   end
 
   def account_params
-    params.require(:account).permit(:icon_image, :background_image, :introduction).merge(user_id: current_user.id)
+    params.require(:account).permit(
+      :icon_image, 
+      :background_image, 
+      :introduction
+    ).merge(user_id: current_user.id)
   end
 end

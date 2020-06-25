@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+
   devise  :database_authenticatable, :registerable,
           :recoverable, :rememberable, :validatable
   has_one :address, dependent: :destroy
@@ -8,8 +9,19 @@ class User < ApplicationRecord
   has_one :account, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :comments
-  
 
+  devise   :database_authenticatable, :registerable,
+           :recoverable, :rememberable, :validatable
+  has_one  :address,                                                     dependent: :destroy
+  has_one  :card,                                                        dependent: :destroy
+  has_one  :account,                                                     dependent: :destroy
+  has_one  :sales_price,                                                 dependent: :destroy
+  has_one  :point,                                                       dependent: :destroy
+  has_many :likes,                                                       dependent: :destroy
+  has_many :from_messages,class_name: "Message" ,foreign_key: "from_id", dependent: :destroy
+  has_many :evaluations
+
+  
   with_options presence: true do
     validates :nickname
     validates :last_name
@@ -26,4 +38,7 @@ class User < ApplicationRecord
   def already_liked?(item)
     self.likes.exists?(item_id: item.id)
   end
+  
+  has_many :active_notifications,   class_name: "Notification",  foreign_key: "sender_id",   dependent: :destroy
+  has_many :passive_notifications,  class_name: "Notification",  foreign_key: "receiver_id", dependent: :destroy
 end
