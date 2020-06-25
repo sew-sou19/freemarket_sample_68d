@@ -90,7 +90,6 @@
 
               %ul.optical
                 %li.report-btn
-                  = link_to '#' do
                     %i.fa.fa-flag
                     不適切な商品の通報
           .commentbox
@@ -101,8 +100,6 @@
                 = form_with(model: [@item, @comment], local: true) do |f|
                   = f.text_area :content, class: "form-control", rows: 5
                   = f.submit "コメントする", class: "fa-comments far"
-                  -# %i.far.fa-comments
-                  -#   コメントする
         .main-item__content--links
           %li
             = link_to "前の商品", item_path(@item.id - 1)

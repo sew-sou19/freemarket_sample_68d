@@ -5,13 +5,6 @@ class CommentsController < ApplicationController
     @comment =Comment.create(comment_params)
     redirect_to items_path(@comment.item.id)
 
-    # if @comment.save
-    #   flash[:success] = "コメントしました"
-    #   redirect_back(fallback_location: root_path)
-    # else
-    #   flash[:success] = "コメントできませんでした"
-    #   redirect_back(fallback_location: root_path)
-    # end
   end
 
   private
