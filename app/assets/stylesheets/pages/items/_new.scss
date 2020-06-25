@@ -1,3 +1,7 @@
+.item-sell-wrapper {
+  height: 100%;
+  background-color: $whitesmoke;
+}
 .sell-form-wrapper {
   background-color: $whitesmoke;
   position: relative;
@@ -16,6 +20,7 @@
       }
       &__field {
         &__form {
+          height: 100%;
           input {
             width: 100%;
             height: 40px;
@@ -27,7 +32,6 @@
           textarea {
             width: 100%;
             height: 120px;
-            // border: 1px solid $lightgray;
           }
           select {
             width: 100%;
@@ -35,9 +39,10 @@
           &--price {
             text-align: right;
           }
-        }
-        &--textarea {
-          height: 140px;
+          &__cnt {
+            text-align: right;
+            color: $gray;
+          }
         }
       }
       .field {
@@ -73,8 +78,6 @@
               transition: 1s;
             }
           }
-          #item-post-btn {
-          }
           #item-draft-btn {
             background-color: $gray;
             padding: 12px 0;
@@ -99,7 +102,12 @@
     width: 100%;
     height: 160px;
     border: dashed 1px $lightgray;
+    border-radius: 3px;
     background-color: $whitesmoke;
+    &:focus {
+      border: 1px solid $skyblue;
+      outline: 0;
+    }
     &__label {
       display: block;
       width: 100%;
@@ -237,7 +245,15 @@ margin: 0;
 }
 
 .item-btn-red{
-  display: block;
   background-color: $sign-up-btn;
   line-height: 50px;
+  display: inline-block;
+  height: 50px;
+  width: 360px;
+  color: white;
+  &:hover {
+    opacity: 0.5;
+    transition: 1s;
+    color: white;
+  }
 }

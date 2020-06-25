@@ -1,0 +1,28 @@
+.mp-content
+  = mypage_background_image_present?(current_user.account)
+  .mp-content__user_info
+    = mypage_icon_image_present?(current_user.account)
+    .mp-content__user_info--name
+      = current_user.nickname
+    .mp-content__user_info--performance
+      %p 
+        %span 評価
+        = current_user.evaluations.count
+      %p 
+        %span 出品数
+        = Item.where(saler_id: current_user.id).including.count
+  .mp-content__todo_info
+    .mp-content__todo_info__tabs
+      #notif_tab.mp-content__todo_info__tabs__tab.active_tab
+        .mp-content__todo_info__tabs__tab__notifications
+          %span お知らせ        
+    .mp-content__todo_info__todo_notif
+      %ul#notif_tab_box.mp-content__todo_info__todo_notif__box.active_box
+        -if @notifications.present?
+          = render "users/mypage-info_list"
+          .mp-content__todo_info__todo_notif__list_link
+            = link_to "一覧を見る", user_notifications_path(current_user), class: "mp-content__todo_info__todo_notif__list_link--btn notif_list_btn"
+        -else 
+          .no-notifications
+            = icon('far', 'file-alt',class: 'file-icon')
+            .no-notifications-information お知らせはありません

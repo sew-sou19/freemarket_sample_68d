@@ -64,6 +64,19 @@ ActiveRecord::Schema.define(version: 2020_06_16_123920) do
     t.index ["item_id"], name: "index_comments_on_item_id"
   end
 
+  create_table "evaluations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "saler_id", null: false
+    t.bigint "buyer_id", null: false
+    t.text "comment"
+    t.integer "evaluation", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["buyer_id"], name: "index_evaluations_on_buyer_id"
+    t.index ["saler_id"], name: "index_evaluations_on_saler_id"
+    t.index ["user_id"], name: "index_evaluations_on_user_id"
+  end
+
   create_table "images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "item_id", null: false
     t.string "image", null: false
@@ -89,7 +102,7 @@ ActiveRecord::Schema.define(version: 2020_06_16_123920) do
     t.integer "saler_id"
     t.string "name", null: false
     t.text "explanation"
-    t.string "delivery_charge_flag", null: false
+    t.integer "delivery_charge_flag", null: false
     t.integer "price", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -111,6 +124,43 @@ ActiveRecord::Schema.define(version: 2020_06_16_123920) do
     t.datetime "updated_at", null: false
     t.index ["item_id"], name: "index_likes_on_item_id"
     t.index ["user_id"], name: "index_likes_on_user_id"
+  end
+
+  create_table "messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "from_id", null: false
+    t.bigint "to_id", null: false
+    t.bigint "room_id", null: false
+    t.text "message", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["from_id"], name: "index_messages_on_from_id"
+    t.index ["room_id"], name: "index_messages_on_room_id"
+    t.index ["to_id"], name: "index_messages_on_to_id"
+  end
+
+  create_table "notifications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "sender_id"
+    t.integer "receiver_id"
+    t.integer "item_id"
+    t.string "action"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "points", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "point", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_points_on_user_id"
+  end
+
+  create_table "sales_prices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "price", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_sales_prices_on_user_id"
   end
 
   create_table "tweets", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -143,8 +193,16 @@ ActiveRecord::Schema.define(version: 2020_06_16_123920) do
   add_foreign_key "addresses", "users"
   add_foreign_key "cards", "users"
   add_foreign_key "comments", "items"
+  add_foreign_key "evaluations", "users"
+  add_foreign_key "evaluations", "users", column: "buyer_id"
+  add_foreign_key "evaluations", "users", column: "saler_id"
   add_foreign_key "images", "items"
   add_foreign_key "items", "categories"
   add_foreign_key "likes", "items"
   add_foreign_key "likes", "users"
+  add_foreign_key "messages", "items", column: "room_id"
+  add_foreign_key "messages", "users", column: "from_id"
+  add_foreign_key "messages", "users", column: "to_id"
+  add_foreign_key "points", "users"
+  add_foreign_key "sales_prices", "users"
 end

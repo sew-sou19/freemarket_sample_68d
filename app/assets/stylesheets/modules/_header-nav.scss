@@ -25,6 +25,9 @@
       height: 50px;
       width: 50px;
     }
+    .user__nickname{
+      padding-top: 10px;
+    }
     .user__details{
       padding-top: 20px;
       font-size: 13px;
@@ -51,20 +54,17 @@
         font-weight: normal;
         font-size: 13px;
         position: relative;
-        &:hover{
-          opacity: 0.6;
-          .fa-chevron-right{
-            color: black;
-            transform: scale(1.5);	/*画像の拡大率*/
-	          transition-duration: 0.3s;
-          }
+        &__price{
+          position: absolute;
+          right: 25px;
+          top: 10px;
         }
         .fa-chevron-right{
           transition-duration: 0.3s;
           color: $lightgray;
           position: absolute;
           right: 10px;
-          top: 12.5px;
+          top: 11.5px;
         }
       }
     }
@@ -112,12 +112,28 @@
   right: 26.5%;
   display: none;
 }
-.nothice__list{
+.notice__list{
+  left: 0px;
   z-index: 1000;
+  right: 100px;
   width: 300px;
   background-color: white;
   border-top: 1px solid $whitesmoke;
+  position: absolute;
+  padding: 55px 30px;
+  text-align: center;
+  color:$lightgray;
+  p{
+    padding-top: 35px;
+  }
+}
+
+.todo__list{
+  z-index: 1000;
   top: 40px;
+  width: 300px;
+  background-color: white;
+  border-top: 1px solid $whitesmoke;
   position: absolute;
   padding: 55px 30px;
   text-align: center;

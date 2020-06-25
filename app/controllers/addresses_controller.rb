@@ -1,5 +1,6 @@
 class AddressesController < ApplicationController
-  before_action :set_category_brand
+  before_action :set_item_search_query
+  before_action :set_categories
   before_action :set_address, except: [:show]
 
   def show
@@ -15,10 +16,21 @@ class AddressesController < ApplicationController
   private
 
   def set_address
-    @address = Address.find_by(user_id: current_user.id)
+    @address = current_user.address
   end
 
   def address_params
-    params.require(:address).permit(:last_name, :first_name, :last_name_kana, :first_name_kana, :prefectures, :postal_code, :municipality, :address, :phone_number, :building)
+    params.require(:address).permit(
+      :last_name, 
+      :first_name, 
+      :last_name_kana, 
+      :first_name_kana, 
+      :prefectures, 
+      :postal_code, 
+      :municipality, 
+      :address, 
+      :phone_number, 
+      :building
+    )
   end
 end
