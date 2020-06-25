@@ -38,4 +38,14 @@ Rails.application.routes.draw do
     end
     resources :trading, only: [:show, :update]
   end
+  resources :posts do
+    resources :comments, only: [:create]
+    
+  end
+  resources :items do
+    resources :comments, only: [:create]
+    root to: 'items#index'
+    resources :items, only: [:index, :new, :create,  :destroy, :edit]
+    
+  end
 end

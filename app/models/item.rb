@@ -12,6 +12,7 @@ class Item < ApplicationRecord
   belongs_to_active_hash :delivery_method
   belongs_to_active_hash :trading_status
   
+  has_many :comments
 
   # 入力必須のバリデーション
   with_options presence: true do

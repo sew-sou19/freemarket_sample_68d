@@ -56,6 +56,8 @@ class ItemsController < ApplicationController
   def show
     redirect_to root_path if @item == nil || @item.trading_status_id == 4
     @user = User.find_by(id: @item.saler_id)
+    @comment = Comment.new
+    @comments = @item.comments.includes(:user)
   end 
 
   def destroy

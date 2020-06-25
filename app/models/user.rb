@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_one :card, dependent: :destroy
   has_one :account, dependent: :destroy
   has_many :likes, dependent: :destroy
+  has_many :comments
   
 
   with_options presence: true do
