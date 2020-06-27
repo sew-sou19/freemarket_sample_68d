@@ -2,8 +2,12 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    @comment =Comment.create(comment_params)
-    redirect_to item_path(@comment.item_id)
+    @comment =Comment.new(comment_params)
+    if @comment.save
+      redirect_to item_path(@comment.item_id)
+    else
+      redirect_to item_path(@comment.item_id),flash: {alert: 'メッセージを入力してください。'}
+    end
 
   end
 

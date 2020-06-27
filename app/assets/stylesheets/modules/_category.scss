@@ -1,17 +1,9 @@
 
-.category__parent {
-  display: none;
-  border-top: solid 1px $lightgray;
-}
-.category__child, .category__grandchild{
+.category__child, .category__parent, .category__grandchild{
   display: none;
 }
 
 #parent_category, #children_category {
-  margin-bottom: 12px;
-}
-
-#parent_category_search, #children_category_search {
   margin-bottom: 12px;
 }
 
@@ -31,10 +23,9 @@
 // カテゴリーの大枠の要素の共通項
 .category__list{
   position: absolute;
-  height: 588px;
+  height: 560px;
   background-color: white;
-  border-right: 1px solid $lightgray;
-  border-bottom: solid 1px $lightgray;
+  border-right: 1px solid $whitesmoke;
   z-index: 1000;
 }
 
@@ -43,14 +34,13 @@
   width: 100%;
   color: black;
   display: block;
-  padding: 5px 15px;
-  font-size: 13px;
+  padding: 3px 15px;
+  font-size: 11px;
   letter-spacing: 2px;
-  z-index: 1000;
 }
 
 .categories{
-  padding-bottom: 2px;
+  padding-bottom: 10px;
   &:hover{
     .category__parent{
       top: 122px;
@@ -60,7 +50,7 @@
         width: 100%;
         color: black;
         display: block;
-        padding: 12px 20px;
+        padding: 10px 20px;
         font-size: 13px;
         letter-spacing: 2px;
       }
@@ -106,7 +96,6 @@
   h5{
     display: inline;
     letter-spacing: 2px;
-    font-weight: bold;
   }
 }
 
@@ -119,11 +108,10 @@
     width: 700px;
     margin: 0 auto;
     padding-bottom: 20px;
-    &__title{
+    h3{
       font-size: 20px;
       letter-spacing: 1px;
       padding: 40px 0 15px;
-      font-weight: bold;
     }
     .box__parent--link{
       font-size: 15px;

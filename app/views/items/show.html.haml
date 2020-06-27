@@ -100,13 +100,9 @@
                 = form_with(model: [@item, @comment], local: true) do |f|
                   = f.text_area :content, class: "form-control", rows: 5
                   = f.submit "コメントする", class: "fa-comments far"
-        .main-item__content--links
-          %li
-            = link_to "前の商品", item_path(@item.id - 1)
-            %i.fa.fa-angle-left
-          %li
-            = link_to "後ろの商品",item_path(@item.id + 1)
-            %i.fa.fa-angle-right
+            .notification
+              - flash.each do |key, value|
+                = content_tag :div, value, class: key
 
         .main-item__content--related
           = link_to  category_path(@item.category.root_id) do
