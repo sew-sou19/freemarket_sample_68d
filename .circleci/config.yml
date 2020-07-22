@@ -51,14 +51,12 @@ jobs:
                             --out /tmp/test-results/rspec.xml \
                             --format progress \
                             $TEST_FILES
-
       # collect reports
       - store_test_results:
           path: /tmp/test-results
       - store_artifacts:
           path: /tmp/test-results
           destination: test-results
-
       # run rubocop
       - run:
           name: run rubocop
@@ -67,4 +65,29 @@ jobs:
           success_message: ':successcircleci:$CIRCLE_BRANCH Build Success\n:github: User：$CIRCLE_USERNAME'
           failure_message: ':failcircleci2:$CIRCLE_BRANCH Build Fail\n:github: User：$CIRCLE_USERNAME'
           webhook: '${SLACK_WEBHOOK}'
+  deploy:
+    docker:
+      - image: circleci/ruby:2.5.1-node-browsers
+    working_directory: ~/freemarket_sample_68d
+    steps:
+      - checkout
+      - run:
+          name: caistrano deploy
+          command: bundle exec cap production deploy
+      - slack/status:
+          success_message: ':successcircleci:$CIRCLE_BRANCH Deploy Success\n:github: User：$CIRCLE_USERNAME'
+          failure_message: ':failcircleci2:$CIRCLE_BRANCH Deploy Fail\n:github: User：$CIRCLE_USERNAME'
+          webhook: '${SLACK_WEBHOOK}'
+workflows:
+  version: 2.1
+  build-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+
 
