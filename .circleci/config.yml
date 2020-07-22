@@ -1,6 +1,6 @@
 version: 2.1
-# orbs:
-#   ruby: circleci/ruby@0.1.2 
+orbs:
+  ruby: circleci/ruby@0.1.2 
 jobs:
   build:
     docker:
@@ -12,7 +12,7 @@ jobs:
       - image: circleci/mysql:5.7
         environment:
           MYSQL_USER: root
-          MYSQL_DB: circle_test
+          MYSQL_DB: freemarket_sample_68d_test
     working_directory: ~/freemarket_sample_68d
     steps:
       - checkout
@@ -22,7 +22,6 @@ jobs:
             sudo gem update --system
             sudo gem uninstall bundler
             sudo rm /usr/local/bin/bundle
-            sudo rm /usr/local/bin/bundler
             sudo gem install bundler
       - restore_cache:
           keys:
