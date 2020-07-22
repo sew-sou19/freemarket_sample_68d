@@ -27,11 +27,6 @@ describe Item do
     end
 
     context 'can not save' do
-      it "画像(image)がない場合は登録できないこと" do
-        item = build(:item_no_images)
-        item.valid?
-        expect(item.errors[:images]).to include("を入力してください")
-      end
 
       it "商品名(name)がない場合は登録できないこと" do
         item = build(:item, name: nil)
