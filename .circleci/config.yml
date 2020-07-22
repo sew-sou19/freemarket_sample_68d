@@ -68,7 +68,7 @@ jobs:
           name: run rubocop
           command: bundle exec rubocop
       - slack/status:
-          success_message: '$CIRCLE_BRANCH Build Success\n:github: User：$CIRCLE_USERNAME'
-          failure_message: '$CIRCLE_BRANCH Build Fail\n:github: User：$CIRCLE_USERNAME'
+          success_message: ':successcircleci:$CIRCLE_BRANCH Build Success\n:github: User：$CIRCLE_USERNAME'
+          failure_message: ':failsuccessci2:$CIRCLE_BRANCH Build Fail\n:github: User：$CIRCLE_USERNAME'
           webhook: '${SLACK_WEBHOOK}'
 
