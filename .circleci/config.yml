@@ -6,9 +6,9 @@ jobs:
   build:
     docker:
       - image: circleci/ruby:2.5.1-node-browsers
-        # environment:
-          # RAILS_ENV: test
-          # BUNDLER_VERSION: 2.1.4
+        environment:
+          RAILS_ENV: test
+          BUNDLER_VERSION: 2.1.4
       - image: circleci/mysql:5.6.47-ram
     working_directory: ~/freemarket_sample_68d
     steps:
@@ -65,6 +65,6 @@ jobs:
           command: bundle exec rubocop
       - slack/status:
           success_message: ':successcircleci:$CIRCLE_BRANCH Build Success\n:github: User：$CIRCLE_USERNAME'
-          failure_message: ':failsuccessci2:$CIRCLE_BRANCH Build Fail\n:github: User：$CIRCLE_USERNAME'
+          failure_message: ':failcircleci2:$CIRCLE_BRANCH Build Fail\n:github: User：$CIRCLE_USERNAME'
           webhook: '${SLACK_WEBHOOK}'
 
