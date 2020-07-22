@@ -66,6 +66,8 @@ jobs:
           failure_message: ':failcircleci2:$CIRCLE_BRANCH Build Fail\n:github: User：$CIRCLE_USERNAME'
           webhook: '${SLACK_WEBHOOK}'
   deploy:
+    docker:
+      - image: circleci/ruby:2.5.1-node-browsers
     working_directory: ~/freemarket_sample_68d
     steps:
       - checkout
