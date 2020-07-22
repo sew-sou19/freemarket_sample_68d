@@ -68,9 +68,32 @@ jobs:
   deploy:
     docker:
       - image: circleci/ruby:2.5.1-node-browsers
+        environment:
+          BUNDLER_VERSION: 2.1.4
     working_directory: ~/freemarket_sample_68d
     steps:
       - checkout
+      - run:  
+          name: Update bundler # bundlerのバージョン２へのアップデート  
+          command: gem update bundler 
+      - run:
+          name: Which bundler?
+          command: bundle -v
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "Gemfile.lock" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run:  
+          name: Bundle Install  
+          command: bundle install --jobs=4 --retry=3 --path vendor/bundle
+      - save_cache:
+          paths:
+            - ./vendor/bundle
+          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+      - add_ssh_keys:
+          fingerprints:
+            - 0f:2a:6c:6a:85:f7:b4:5a:18:95:9f:71:f3:14:d0:a8
       - run:
           name: caistrano deploy
           command: bundle exec cap production deploy
