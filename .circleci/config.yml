@@ -67,11 +67,8 @@ jobs:
       - run:
           name: run rubocop
           command: bundle exec rubocop
-workflows:
-  version: 2.1
-  build_and_test: # < ワークフローに関して Slack 通知とメール通知が配信されます
-    jobs:
-    # IRC インテグレーションによってジョブごとの通知を受け取ります
-      - build
-      - test
+      - slack/status:
+          success_message: ':circleci-pass: $CIRCLE_BRANCH のテストが完了しました\n:github_octocat: User：$CIRCLE_USERNAME'
+          failure_message: ':circleci-fail: $CIRCLE_BRANCH のテストが失敗しました\n:github_octocat: User：$CIRCLE_USERNAME'
+          webhook: '${SLACK_WEBHOOK}'
 
