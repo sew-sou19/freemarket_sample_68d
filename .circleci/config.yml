@@ -16,25 +16,20 @@ jobs:
     working_directory: ~/freemarket_sample_68d
     steps:
       - checkout
+      - run:  
+          name: Update bundler # bundlerのバージョン２へのアップデート  
+          command: gem update bundler 
       - run:
-          name: setup bundler
-          command: |
-            sudo gem update --system
-            sudo gem uninstall bundler
-            sudo rm /usr/local/bin/bundle
-            sudo gem install bundler
+          name: Which bundler?
+          command: bundle -v
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "Gemfile.lock" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
-      - run:
-          name: Which bundler?
-          command: bundle -v
-      - run:
-          name: install dependencies
-          command: |
-            bundle install
+      - run:  
+          name: Bundle Install  
+          command: bundle check --path vendor/bundle || bundle install --deployment  
       - save_cache:
           paths:
             - ./vendor/bundle
