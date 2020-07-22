@@ -67,4 +67,11 @@ jobs:
       - run:
           name: run rubocop
           command: bundle exec rubocop
+workflows:
+  version: 2.1
+  build_and_test: # < ワークフローに関して Slack 通知とメール通知が配信されます
+    jobs:
+    # IRC インテグレーションによってジョブごとの通知を受け取ります
+      - build
+      - test
 
