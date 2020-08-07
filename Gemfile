@@ -98,5 +98,4 @@ gem 'bootstrap-sass'
 gem 'data-confirm-modal'
 gem 'faker', "~> 2.8"
 gem 'forgery_ja'
-gem 'seed_dump'
 
