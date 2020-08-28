@@ -55,6 +55,16 @@ ActiveRecord::Schema.define(version: 20_200_607_051_917) do
     t.index ["ancestry"], name: "index_categories_on_ancestry"
   end
 
+  create_table "comments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.text "content"
+    t.bigint "item_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_comments_on_item_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
   create_table "evaluations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "saler_id", null: false
@@ -163,6 +173,8 @@ ActiveRecord::Schema.define(version: 20_200_607_051_917) do
   add_foreign_key "accounts", "users"
   add_foreign_key "addresses", "users"
   add_foreign_key "cards", "users"
+  add_foreign_key "comments", "items"
+  add_foreign_key "comments", "users"
   add_foreign_key "evaluations", "users"
   add_foreign_key "evaluations", "users", column: "buyer_id"
   add_foreign_key "evaluations", "users", column: "saler_id"

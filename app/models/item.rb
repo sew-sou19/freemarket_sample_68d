@@ -11,6 +11,10 @@ class Item < ApplicationRecord
   belongs_to_active_hash :delivery_method
   belongs_to_active_hash :trading_status
 
+  
+  has_many :comments, dependent: :destroy
+
+
   scope :desc,                 -> {order('created_at DESC')}
   scope :including,            -> {includes(:images)}
   scope :not_draft,            -> {including.where.not(trading_status_id: 4)}

@@ -282,8 +282,8 @@
           &__contents {
             list-style: none;
           }
-          .new__comment {
-            .comment__body {
+          .commentbox__contents {
+            .form-control {
               width: 100%;
               min-height: 104px;
               padding: 10px;
@@ -292,14 +292,8 @@
               font-weight: inherit;
               border-style: solid;
             }
-            .notice__message {
-              padding: 8px;
-              font-size: 14px;
-              background-color: #f8f8f8;
-              margin: 10px 0;
-              text-align: left;
-            }
-            .comment__btn {
+
+            .far.fa-comments {
               font-size: 18px;
               line-height: 48px;
               background: #3CCACE;

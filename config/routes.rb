@@ -33,6 +33,7 @@ Rails.application.routes.draw do
   end
   
   resources :items do
+    resources :comments, only: [:create]
     resources :likes, only: [:create, :destroy]
     resources :evaluations, only: [:create, :index]
     collection do
@@ -50,6 +51,7 @@ Rails.application.routes.draw do
     end
     resources :messages, only: [:create, :destroy]
   end
+
   
   get  '*unmatched_route', to: 'application#render_404', format: false
 end

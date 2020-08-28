@@ -87,6 +87,23 @@
                       %span= @item.delivery_method.name
             .itembox__option
               = render partial: 'likes/like', locals: { item: @item}
+
+              %ul.optical
+                %li.report-btn
+                  %i.fa.fa-flag
+                    不適切な商品の通報
+          .commentbox
+            - @comments.each do |comment|
+              = comment.content
+            %ul.commentbox__contents
+              - if user_signed_in?
+                = form_with(model: [@item, @comment], local: true) do |f|
+                  = f.text_area :content, class: "form-control", rows: 5
+                  = f.submit "コメントする", class: "fa-comments far"
+            .notification
+              - flash.each do |key, value|
+                = content_tag :div, value, class: key
+
         .main-item__content--related
           = link_to  category_path(@item.category.root_id) do
             = @item.category.root.name
